@@ -1,0 +1,3448 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+ Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="1.2.0-alpha1" use-changelog="false" max-obj-count="96"
+	 last-position="0,-8" last-zoom="0.8" scene-rect="0,-10,4041.38,1560.92"
+	 default-schema="public" default-owner="postgres"
+	 layers="Default layer"
+	 active-layers="0"
+	 layer-name-colors="#000000"
+	 layer-rect-colors="#b4b4b4"
+	 show-layer-names="false" show-layer-rects="false">
+<role name="eduardo"
+ superuser="true"
+ createdb="true"
+ createrole="true"
+ inherit="true"
+ login="true"
+ password="********">
+</role>
+
+<role name="taskmaster_svc"
+ inherit="true"
+ login="true"
+ password="********">
+</role>
+
+<role name="taskmaster_super"
+ inherit="true"
+ password="********">
+	<roles names="eduardo,taskmaster_svc" role-type="admin" />
+</role>
+
+<database name="taskmaster2000" encoding="UTF8" lc-collate="en_US.UTF-8" lc-ctype="en_US.UTF-8" is-template="false" allow-conns="true">
+	<role name="taskmaster_super"/>
+	<tablespace name="pg_default"/>
+</database>
+
+<schema name="public" layers="0" rect-visible="true" fill-color="#e1e1e1" name-color="#000000" sql-disabled="true">
+</schema>
+
+<schema name="eduardo" layers="0" rect-visible="true" fill-color="#384c3f" name-color="#000000">
+	<role name="taskmaster_super"/>
+</schema>
+
+<sequence name="board_id_board_seq" cycle="false" start="1" increment="1" min-value="1" max-value="2147483647" cache="1">
+	<schema name="eduardo"/>
+	<role name="taskmaster_super"/>
+</sequence>
+
+<table name="board" layers="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="eduardo"/>
+	<role name="taskmaster_super"/>
+	<position x="60" y="200"/>
+	<column name="id_board" not-null="true" default-value="nextval('board_id_board_seq'::regclass)">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="character varying" length="80"/>
+	</column>
+	<constraint name="board_pkey" type="pk-constr" table="eduardo.board">
+		<columns names="id_board" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="board_objects_id_object_seq" cycle="false" start="1" increment="1" min-value="1" max-value="9223372036854775807" cache="1">
+	<schema name="eduardo"/>
+	<role name="taskmaster_super"/>
+</sequence>
+
+<table name="board_objects" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="eduardo"/>
+	<role name="taskmaster_super"/>
+	<position x="580" y="140"/>
+	<column name="id_object" not-null="true" default-value="nextval('board_objects_id_object_seq'::regclass)">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="id_board" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="id_project">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="id_tag">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="board_objects_pkey" type="pk-constr" table="eduardo.board_objects">
+		<columns names="id_object" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="board_states" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="eduardo"/>
+	<role name="taskmaster_super"/>
+	<position x="60" y="1240"/>
+	<column name="id_board" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="state_set" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="board_states_pkey" type="pk-constr" table="eduardo.board_states">
+		<columns names="id_board,state_set" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="project_id_project_seq" cycle="false" start="1" increment="1" min-value="1" max-value="2147483647" cache="1">
+	<schema name="eduardo"/>
+	<role name="taskmaster_super"/>
+</sequence>
+
+<table name="project" layers="0" collapse-mode="2" max-obj-count="6" z-value="0">
+	<schema name="eduardo"/>
+	<role name="taskmaster_super"/>
+	<position x="1240" y="140"/>
+	<column name="id_project" not-null="true" default-value="nextval('project_id_project_seq'::regclass)">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="character varying" length="80"/>
+	</column>
+	<column name="enable_billing" default-value="true">
+		<type name="boolean" length="0"/>
+	</column>
+	<column name="color">
+		<type name="character varying" length="12"/>
+	</column>
+	<column name="project_key">
+		<type name="varchar" length="8"/>
+	</column>
+	<constraint name="project_pk" type="pk-constr" table="eduardo.project">
+		<columns names="id_project" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="project_tags" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="eduardo"/>
+	<role name="taskmaster_super"/>
+	<position x="1240" y="420"/>
+	<column name="id_project" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="id_tag" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="project_tags_pkey" type="pk-constr" table="eduardo.project_tags">
+		<columns names="id_project,id_tag" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="state" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="eduardo"/>
+	<role name="taskmaster_super"/>
+	<position x="1760" y="1360"/>
+	<column name="state" not-null="true">
+		<type name="character varying" length="40"/>
+	</column>
+	<column name="hide_after_days">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="show_dimmed" default-value="false">
+		<type name="boolean" length="0"/>
+	</column>
+	<column name="background_color">
+		<type name="character varying" length="10"/>
+	</column>
+	<constraint name="state_pkey" type="pk-constr" table="eduardo.state">
+		<columns names="state" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="state_set_id_state_set_seq" cycle="false" start="1" increment="1" min-value="1" max-value="2147483647" cache="1">
+	<schema name="eduardo"/>
+	<role name="taskmaster_super"/>
+</sequence>
+
+<table name="state_set" layers="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="eduardo"/>
+	<role name="taskmaster_super"/>
+	<position x="540" y="1300"/>
+	<column name="id_state_set" not-null="true" default-value="nextval('state_set_id_state_set_seq'::regclass)">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="state_set" not-null="true">
+		<type name="character varying" length="40"/>
+	</column>
+	<constraint name="state_set_pkey" type="pk-constr" table="eduardo.state_set">
+		<columns names="id_state_set" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="states_4_set" layers="0" collapse-mode="2" max-obj-count="8" z-value="0">
+	<schema name="eduardo"/>
+	<role name="taskmaster_super"/>
+	<position x="1040" y="1240"/>
+	<column name="state_set" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="state" not-null="true">
+		<type name="character varying" length="40"/>
+	</column>
+	<column name="item_order" default-value="0">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="initial_state" default-value="false">
+		<type name="boolean" length="0"/>
+	</column>
+	<column name="end_state" default-value="false">
+		<type name="boolean" length="0"/>
+	</column>
+	<column name="next_states">
+		<type name="character varying" length="40" dimension="1"/>
+	</column>
+	<column name="started_state" default-value="false">
+		<type name="boolean" length="0"/>
+	</column>
+	<constraint name="states_4_set_pkey" type="pk-constr" table="eduardo.states_4_set">
+		<columns names="state_set,state" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="tag_id_tag_seq" cycle="false" start="1" increment="1" min-value="1" max-value="2147483647" cache="1">
+	<schema name="eduardo"/>
+	<role name="taskmaster_super"/>
+</sequence>
+
+<table name="tag" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="eduardo"/>
+	<role name="taskmaster_super"/>
+	<position x="620" y="520"/>
+	<column name="id_tag" not-null="true" default-value="nextval('tag_id_tag_seq'::regclass)">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="tag" not-null="true">
+		<type name="character varying" length="64"/>
+	</column>
+	<column name="system_tag" default-value="false">
+		<type name="boolean" length="0"/>
+	</column>
+	<column name="expression">
+		<type name="varchar" length="0"/>
+	</column>
+	<constraint name="tag_pkey" type="pk-constr" table="eduardo.tag">
+		<columns names="id_tag" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="task_tags" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="eduardo"/>
+	<role name="taskmaster_super"/>
+	<position x="1240" y="640"/>
+	<column name="id_task" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="id_tag" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="task_tags_pkey" type="pk-constr" table="eduardo.task_tags">
+		<columns names="id_task,id_tag" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="time_spent_id_interval_seq" cycle="false" start="1" increment="1" min-value="1" max-value="2147483647" cache="1">
+	<schema name="eduardo"/>
+	<role name="taskmaster_super"/>
+</sequence>
+
+<table name="time_spent" layers="0" collapse-mode="2" max-obj-count="6" z-value="0">
+	<schema name="eduardo"/>
+	<role name="taskmaster_super"/>
+	<position x="2720" y="900"/>
+	<column name="id_interval" not-null="true" default-value="nextval('time_spent_id_interval_seq'::regclass)">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="id_task" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="start_time" not-null="true">
+		<type name="timestamp" length="0"/>
+	</column>
+	<column name="end_time">
+		<type name="timestamp" length="0"/>
+	</column>
+	<column name="description">
+		<type name="character varying" length="0"/>
+	</column>
+	<constraint name="pk_time_spent" type="pk-constr" table="eduardo.time_spent">
+		<columns names="id_interval" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="roles_id_seq" cycle="false" start="1" increment="1" min-value="1" max-value="2147483647" cache="1">
+	<schema name="public"/>
+	<role name="taskmaster_super"/>
+</sequence>
+
+<table name="roles" layers="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="public"/>
+	<role name="taskmaster_super"/>
+	<position x="3620" y="80"/>
+	<column name="id" not-null="true" sequence="public.roles_id_seq">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="role" not-null="true">
+		<type name="character varying" length="0"/>
+	</column>
+	<constraint name="roles_pkey" type="pk-constr" table="public.roles">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="roles_role_key" type="uq-constr" table="public.roles">
+		<columns names="role" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="user_roles" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="taskmaster_super"/>
+	<position x="3600" y="400"/>
+	<column name="user" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="role" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="user_roles_pkey" type="pk-constr" table="public.user_roles">
+		<columns names="user,role" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="users_id_seq" cycle="false" start="1" increment="1" min-value="1" max-value="2147483647" cache="1">
+	<schema name="public"/>
+	<role name="taskmaster_super"/>
+</sequence>
+
+<table name="users" layers="0" collapse-mode="2" max-obj-count="8" z-value="0">
+	<schema name="public"/>
+	<role name="taskmaster_super"/>
+	<position x="3600" y="780"/>
+	<column name="id" not-null="true" sequence="public.users_id_seq">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="active" not-null="true">
+		<type name="boolean" length="0"/>
+	</column>
+	<column name="username" not-null="true">
+		<type name="character varying" length="0"/>
+	</column>
+	<column name="password" not-null="true">
+		<type name="character varying" length="0"/>
+	</column>
+	<column name="first_name">
+		<type name="character varying" length="100"/>
+	</column>
+	<column name="last_name">
+		<type name="character varying" length="100"/>
+	</column>
+	<column name="token">
+		<type name="varchar" length="40"/>
+	</column>
+	<constraint name="users_pkey" type="pk-constr" table="public.users">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="users_username_key" type="uq-constr" table="public.users">
+		<columns names="username" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<extension name="ltree" cur-version="1.3">
+	<schema name="public"/>
+	<type name="ltree"/>
+	<type name="ltree[]"/>
+	<type name="lquery"/>
+	<type name="lquery[]"/>
+	<type name="ltxtquery"/>
+	<type name="ltxtquery[]"/>
+	<type name="ltree_gist"/>
+	<type name="ltree_gist[]"/>
+</extension>
+
+<function name="ltree_in" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="public.ltree" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="cstring" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltree_in"/>
+</function>
+
+<function name="ltree_out" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="cstring" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltree_out"/>
+</function>
+
+<function name="ltree_cmp" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="integer" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltree_cmp"/>
+</function>
+
+<function name="ltree_lt" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="boolean" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltree_lt"/>
+</function>
+
+<function name="ltree_le" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="boolean" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltree_le"/>
+</function>
+
+<function name="ltree_eq" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="boolean" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltree_eq"/>
+</function>
+
+<function name="ltree_ge" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="boolean" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltree_ge"/>
+</function>
+
+<function name="ltree_gt" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="boolean" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltree_gt"/>
+</function>
+
+<function name="ltree_ne" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="boolean" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltree_ne"/>
+</function>
+
+<operator name="&gt;" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltree" length="0" ref-type="left-type"/>
+	<type name="public.ltree" length="0" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public.ltree_gt(public.ltree,public.ltree)"/>
+</operator>
+
+<operator name="&gt;=" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltree" length="0" ref-type="left-type"/>
+	<type name="public.ltree" length="0" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public.ltree_ge(public.ltree,public.ltree)"/>
+</operator>
+
+<operator name="&lt;" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltree" length="0" ref-type="left-type"/>
+	<type name="public.ltree" length="0" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public.ltree_lt(public.ltree,public.ltree)"/>
+</operator>
+
+<operator name="&lt;=" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltree" length="0" ref-type="left-type"/>
+	<type name="public.ltree" length="0" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public.ltree_le(public.ltree,public.ltree)"/>
+</operator>
+
+<operator name="&lt;&gt;" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltree" length="0" ref-type="left-type"/>
+	<type name="public.ltree" length="0" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public.ltree_ne(public.ltree,public.ltree)"/>
+</operator>
+
+<operator name="=" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltree" length="0" ref-type="left-type"/>
+	<type name="public.ltree" length="0" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public.ltree_eq(public.ltree,public.ltree)"/>
+</operator>
+
+<function name="subltree" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="public.ltree" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="integer" length="0"/>
+	</parameter>
+	<parameter name="_param3">
+		<type name="integer" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="subltree"/>
+</function>
+
+<function name="subpath" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="public.ltree" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="integer" length="0"/>
+	</parameter>
+	<parameter name="_param3">
+		<type name="integer" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="subpath"/>
+</function>
+
+<function name="subpath" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="public.ltree" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="integer" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="subpath"/>
+</function>
+
+<function name="index" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="integer" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltree_index"/>
+</function>
+
+<function name="index" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="integer" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param3">
+		<type name="integer" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltree_index"/>
+</function>
+
+<function name="nlevel" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="integer" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="nlevel"/>
+</function>
+
+<function name="ltree2text" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="text" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltree2text"/>
+</function>
+
+<function name="text2ltree" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="public.ltree" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="text" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="text2ltree"/>
+</function>
+
+<function name="lca" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="public.ltree" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0" dimension="1"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="_lca"/>
+</function>
+
+<function name="lca" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="public.ltree" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="lca"/>
+</function>
+
+<function name="lca" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="public.ltree" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param3">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="lca"/>
+</function>
+
+<function name="lca" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="public.ltree" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param3">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param4">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="lca"/>
+</function>
+
+<function name="lca" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="public.ltree" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param3">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param4">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param5">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="lca"/>
+</function>
+
+<function name="lca" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="public.ltree" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param3">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param4">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param5">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param6">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="lca"/>
+</function>
+
+<function name="lca" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="public.ltree" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param3">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param4">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param5">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param6">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param7">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="lca"/>
+</function>
+
+<function name="lca" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="public.ltree" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param3">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param4">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param5">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param6">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param7">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param8">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="lca"/>
+</function>
+
+<function name="ltree_isparent" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="boolean" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltree_isparent"/>
+</function>
+
+<function name="ltree_risparent" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="boolean" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltree_risparent"/>
+</function>
+
+<function name="ltree_addltree" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="public.ltree" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltree_addltree"/>
+</function>
+
+<function name="ltree_addtext" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="public.ltree" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="text" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltree_addtext"/>
+</function>
+
+<function name="ltree_textadd" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="public.ltree" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltree_textadd"/>
+</function>
+
+<function name="ltreeparentsel" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="double precision" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="internal" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="oid" length="0"/>
+	</parameter>
+	<parameter name="_param3">
+		<type name="internal" length="0"/>
+	</parameter>
+	<parameter name="_param4">
+		<type name="integer" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltreeparentsel"/>
+</function>
+
+<operator name="&lt;@" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltree" length="0" ref-type="left-type"/>
+	<type name="public.ltree" length="0" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public.ltree_risparent(public.ltree,public.ltree)"/>
+</operator>
+
+<operator name="@&gt;" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltree" length="0" ref-type="left-type"/>
+	<type name="public.ltree" length="0" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public.ltree_isparent(public.ltree,public.ltree)"/>
+</operator>
+
+<operator name="^&lt;@" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltree" length="0" ref-type="left-type"/>
+	<type name="public.ltree" length="0" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public.ltree_risparent(public.ltree,public.ltree)"/>
+</operator>
+
+<operator name="^@&gt;" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltree" length="0" ref-type="left-type"/>
+	<type name="public.ltree" length="0" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public.ltree_isparent(public.ltree,public.ltree)"/>
+</operator>
+
+<operator name="||" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltree" length="0" ref-type="left-type"/>
+	<type name="public.ltree" length="0" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public.ltree_addltree(public.ltree,public.ltree)"/>
+</operator>
+
+<operator name="||" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltree" length="0" ref-type="left-type"/>
+	<type name="text" length="0" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public.ltree_addtext(public.ltree,text)"/>
+</operator>
+
+<operator name="||" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="text" length="0" ref-type="left-type"/>
+	<type name="public.ltree" length="0" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public.ltree_textadd(text,public.ltree)"/>
+</operator>
+
+<opfamily name="ltree_ops" index-type="btree" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+</opfamily>
+
+<opclass  name="ltree_ops" index-type="btree" default="true" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<opfamily signature="public.ltree_ops USING btree"/>
+	<type name="public.ltree" length="0"/>
+	<element type="function" stg-number="1">
+		<function signature="public.ltree_cmp(public.ltree,public.ltree)"/>
+	</element>
+	<element type="operator" stg-number="1">
+		<operator  signature="public.&lt;(public.ltree,public.ltree)"/>
+	</element>
+	<element type="operator" stg-number="2">
+		<operator  signature="public.&lt;=(public.ltree,public.ltree)"/>
+	</element>
+	<element type="operator" stg-number="3">
+		<operator  signature="public.=(public.ltree,public.ltree)"/>
+	</element>
+	<element type="operator" stg-number="4">
+		<operator  signature="public.&gt;=(public.ltree,public.ltree)"/>
+	</element>
+	<element type="operator" stg-number="5">
+		<operator  signature="public.&gt;(public.ltree,public.ltree)"/>
+	</element>
+</opclass>
+
+<function name="lquery_in" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="public.lquery" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="cstring" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="lquery_in"/>
+</function>
+
+<function name="lquery_out" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="cstring" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.lquery" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="lquery_out"/>
+</function>
+
+<function name="ltq_regex" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="boolean" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.lquery" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltq_regex"/>
+</function>
+
+<function name="ltq_rregex" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="boolean" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.lquery" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltq_rregex"/>
+</function>
+
+<operator name="~" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.lquery" length="0" ref-type="left-type"/>
+	<type name="public.ltree" length="0" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public.ltq_rregex(public.lquery,public.ltree)"/>
+</operator>
+
+<operator name="~" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltree" length="0" ref-type="left-type"/>
+	<type name="public.lquery" length="0" ref-type="right-type"/>
+	<operator ref-type="commutator-op" signature="public.~(public.lquery,public.ltree)"/>
+	<function ref-type="operfunc" signature="public.ltq_regex(public.ltree,public.lquery)"/>
+</operator>
+
+<operator name="^~" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.lquery" length="0" ref-type="left-type"/>
+	<type name="public.ltree" length="0" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public.ltq_rregex(public.lquery,public.ltree)"/>
+</operator>
+
+<operator name="^~" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltree" length="0" ref-type="left-type"/>
+	<type name="public.lquery" length="0" ref-type="right-type"/>
+	<operator ref-type="commutator-op" signature="public.^~(public.lquery,public.ltree)"/>
+	<function ref-type="operfunc" signature="public.ltq_regex(public.ltree,public.lquery)"/>
+</operator>
+
+<function name="lt_q_regex" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="boolean" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.lquery" length="0" dimension="1"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="lt_q_regex"/>
+</function>
+
+<function name="lt_q_rregex" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="boolean" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.lquery" length="0" dimension="1"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="lt_q_rregex"/>
+</function>
+
+<operator name="?" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.lquery" length="0" dimension="1" ref-type="left-type"/>
+	<type name="public.ltree" length="0" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public.lt_q_rregex(public.lquery[],public.ltree)"/>
+</operator>
+
+<operator name="?" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltree" length="0" ref-type="left-type"/>
+	<type name="public.lquery" length="0" dimension="1" ref-type="right-type"/>
+	<operator ref-type="commutator-op" signature="public.?(public.lquery[],public.ltree)"/>
+	<function ref-type="operfunc" signature="public.lt_q_regex(public.ltree,public.lquery[])"/>
+</operator>
+
+<operator name="^?" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.lquery" length="0" dimension="1" ref-type="left-type"/>
+	<type name="public.ltree" length="0" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public.lt_q_rregex(public.lquery[],public.ltree)"/>
+</operator>
+
+<operator name="^?" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltree" length="0" ref-type="left-type"/>
+	<type name="public.lquery" length="0" dimension="1" ref-type="right-type"/>
+	<operator ref-type="commutator-op" signature="public.^?(public.lquery[],public.ltree)"/>
+	<function ref-type="operfunc" signature="public.lt_q_regex(public.ltree,public.lquery[])"/>
+</operator>
+
+<function name="ltxtq_in" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="public.ltxtquery" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="cstring" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltxtq_in"/>
+</function>
+
+<function name="ltxtq_out" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="cstring" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltxtquery" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltxtq_out"/>
+</function>
+
+<function name="ltxtq_exec" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="boolean" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltxtquery" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltxtq_exec"/>
+</function>
+
+<function name="ltxtq_rexec" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="boolean" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltxtquery" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltxtq_rexec"/>
+</function>
+
+<operator name="@" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltxtquery" length="0" ref-type="left-type"/>
+	<type name="public.ltree" length="0" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public.ltxtq_rexec(public.ltxtquery,public.ltree)"/>
+</operator>
+
+<operator name="@" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltree" length="0" ref-type="left-type"/>
+	<type name="public.ltxtquery" length="0" ref-type="right-type"/>
+	<operator ref-type="commutator-op" signature="public.@(public.ltxtquery,public.ltree)"/>
+	<function ref-type="operfunc" signature="public.ltxtq_exec(public.ltree,public.ltxtquery)"/>
+</operator>
+
+<operator name="^@" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltxtquery" length="0" ref-type="left-type"/>
+	<type name="public.ltree" length="0" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public.ltxtq_rexec(public.ltxtquery,public.ltree)"/>
+</operator>
+
+<operator name="^@" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltree" length="0" ref-type="left-type"/>
+	<type name="public.ltxtquery" length="0" ref-type="right-type"/>
+	<operator ref-type="commutator-op" signature="public.^@(public.ltxtquery,public.ltree)"/>
+	<function ref-type="operfunc" signature="public.ltxtq_exec(public.ltree,public.ltxtquery)"/>
+</operator>
+
+<function name="ltree_gist_in" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="public.ltree_gist" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="cstring" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltree_gist_in"/>
+</function>
+
+<function name="ltree_gist_out" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="cstring" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree_gist" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltree_gist_out"/>
+</function>
+
+<function name="ltree_consistent" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="boolean" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="internal" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param3">
+		<type name="smallint" length="0"/>
+	</parameter>
+	<parameter name="_param4">
+		<type name="oid" length="0"/>
+	</parameter>
+	<parameter name="_param5">
+		<type name="internal" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltree_consistent"/>
+</function>
+
+<function name="ltree_compress" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="internal" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="internal" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltree_compress"/>
+</function>
+
+<function name="ltree_decompress" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="internal" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="internal" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltree_decompress"/>
+</function>
+
+<function name="ltree_penalty" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="internal" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="internal" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="internal" length="0"/>
+	</parameter>
+	<parameter name="_param3">
+		<type name="internal" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltree_penalty"/>
+</function>
+
+<function name="ltree_picksplit" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="internal" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="internal" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="internal" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltree_picksplit"/>
+</function>
+
+<function name="ltree_union" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="public.ltree_gist" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="internal" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="internal" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltree_union"/>
+</function>
+
+<function name="ltree_same" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="internal" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree_gist" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltree_gist" length="0"/>
+	</parameter>
+	<parameter name="_param3">
+		<type name="internal" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltree_same"/>
+</function>
+
+<opfamily name="gist_ltree_ops" index-type="gist" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+</opfamily>
+
+<function name="ltree_gist_options" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="void" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="internal" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltree_gist_options"/>
+</function>
+
+<opclass  name="gist_ltree_ops" index-type="gist" default="true" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<opfamily signature="public.gist_ltree_ops USING gist"/>
+	<type name="public.ltree" length="0"/>
+	<element type="storage">
+		<type name="public.ltree_gist" length="0"/>
+	</element>
+	<element type="function" stg-number="1">
+		<function signature="public.ltree_consistent(internal,public.ltree,smallint,oid,internal)"/>
+	</element>
+	<element type="function" stg-number="2">
+		<function signature="public.ltree_union(internal,internal)"/>
+	</element>
+	<element type="function" stg-number="3">
+		<function signature="public.ltree_compress(internal)"/>
+	</element>
+	<element type="function" stg-number="4">
+		<function signature="public.ltree_decompress(internal)"/>
+	</element>
+	<element type="function" stg-number="5">
+		<function signature="public.ltree_penalty(internal,internal,internal)"/>
+	</element>
+	<element type="function" stg-number="6">
+		<function signature="public.ltree_picksplit(internal,internal)"/>
+	</element>
+	<element type="function" stg-number="7">
+		<function signature="public.ltree_same(public.ltree_gist,public.ltree_gist,internal)"/>
+	</element>
+	<element type="function" stg-number="10">
+		<function signature="public.ltree_gist_options(internal)"/>
+	</element>
+	<element type="operator" stg-number="1">
+		<operator  signature="public.&lt;(public.ltree,public.ltree)"/>
+	</element>
+	<element type="operator" stg-number="2">
+		<operator  signature="public.&lt;=(public.ltree,public.ltree)"/>
+	</element>
+	<element type="operator" stg-number="3">
+		<operator  signature="public.=(public.ltree,public.ltree)"/>
+	</element>
+	<element type="operator" stg-number="4">
+		<operator  signature="public.&gt;=(public.ltree,public.ltree)"/>
+	</element>
+	<element type="operator" stg-number="5">
+		<operator  signature="public.&gt;(public.ltree,public.ltree)"/>
+	</element>
+	<element type="operator" stg-number="10">
+		<operator  signature="public.@&gt;(public.ltree,public.ltree)"/>
+	</element>
+	<element type="operator" stg-number="11">
+		<operator  signature="public.&lt;@(public.ltree,public.ltree)"/>
+	</element>
+	<element type="operator" stg-number="12">
+		<operator  signature="public.~(public.ltree,public.lquery)"/>
+	</element>
+	<element type="operator" stg-number="13">
+		<operator ref-type="commutator-op" signature="public.~(public.lquery,public.ltree)"/>
+	</element>
+	<element type="operator" stg-number="14">
+		<operator  signature="public.@(public.ltree,public.ltxtquery)"/>
+	</element>
+	<element type="operator" stg-number="15">
+		<operator ref-type="commutator-op" signature="public.@(public.ltxtquery,public.ltree)"/>
+	</element>
+	<element type="operator" stg-number="16">
+		<operator  signature="public.?(public.ltree,public.lquery[])"/>
+	</element>
+	<element type="operator" stg-number="17">
+		<operator ref-type="commutator-op" signature="public.?(public.lquery[],public.ltree)"/>
+	</element>
+</opclass>
+
+<function name="_ltree_isparent" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="boolean" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0" dimension="1"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="_ltree_isparent"/>
+</function>
+
+<function name="_ltree_r_isparent" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="boolean" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltree" length="0" dimension="1"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="_ltree_r_isparent"/>
+</function>
+
+<function name="_ltree_risparent" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="boolean" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0" dimension="1"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="_ltree_risparent"/>
+</function>
+
+<function name="_ltree_r_risparent" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="boolean" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltree" length="0" dimension="1"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="_ltree_r_risparent"/>
+</function>
+
+<function name="_ltq_regex" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="boolean" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0" dimension="1"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.lquery" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="_ltq_regex"/>
+</function>
+
+<function name="_ltq_rregex" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="boolean" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.lquery" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltree" length="0" dimension="1"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="_ltq_rregex"/>
+</function>
+
+<function name="_lt_q_regex" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="boolean" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0" dimension="1"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.lquery" length="0" dimension="1"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="_lt_q_regex"/>
+</function>
+
+<function name="_lt_q_rregex" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="boolean" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.lquery" length="0" dimension="1"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltree" length="0" dimension="1"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="_lt_q_rregex"/>
+</function>
+
+<function name="_ltxtq_exec" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="boolean" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0" dimension="1"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltxtquery" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="_ltxtq_exec"/>
+</function>
+
+<function name="_ltxtq_rexec" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="boolean" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltxtquery" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltree" length="0" dimension="1"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="_ltxtq_rexec"/>
+</function>
+
+<operator name="&lt;@" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltree" length="0" ref-type="left-type"/>
+	<type name="public.ltree" length="0" dimension="1" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public._ltree_r_isparent(public.ltree,public.ltree[])"/>
+</operator>
+
+<operator name="@&gt;" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltree" length="0" dimension="1" ref-type="left-type"/>
+	<type name="public.ltree" length="0" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public._ltree_isparent(public.ltree[],public.ltree)"/>
+</operator>
+
+<operator name="@&gt;" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltree" length="0" ref-type="left-type"/>
+	<type name="public.ltree" length="0" dimension="1" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public._ltree_r_risparent(public.ltree,public.ltree[])"/>
+</operator>
+
+<operator name="&lt;@" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltree" length="0" dimension="1" ref-type="left-type"/>
+	<type name="public.ltree" length="0" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public._ltree_risparent(public.ltree[],public.ltree)"/>
+</operator>
+
+<operator name="~" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.lquery" length="0" ref-type="left-type"/>
+	<type name="public.ltree" length="0" dimension="1" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public._ltq_rregex(public.lquery,public.ltree[])"/>
+</operator>
+
+<operator name="~" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltree" length="0" dimension="1" ref-type="left-type"/>
+	<type name="public.lquery" length="0" ref-type="right-type"/>
+	<operator ref-type="commutator-op" signature="public.~(public.lquery,public.ltree[])"/>
+	<function ref-type="operfunc" signature="public._ltq_regex(public.ltree[],public.lquery)"/>
+</operator>
+
+<operator name="?" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.lquery" length="0" dimension="1" ref-type="left-type"/>
+	<type name="public.ltree" length="0" dimension="1" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public._lt_q_rregex(public.lquery[],public.ltree[])"/>
+</operator>
+
+<operator name="?" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltree" length="0" dimension="1" ref-type="left-type"/>
+	<type name="public.lquery" length="0" dimension="1" ref-type="right-type"/>
+	<operator ref-type="commutator-op" signature="public.?(public.lquery[],public.ltree[])"/>
+	<function ref-type="operfunc" signature="public._lt_q_regex(public.ltree[],public.lquery[])"/>
+</operator>
+
+<operator name="@" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltxtquery" length="0" ref-type="left-type"/>
+	<type name="public.ltree" length="0" dimension="1" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public._ltxtq_rexec(public.ltxtquery,public.ltree[])"/>
+</operator>
+
+<operator name="@" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltree" length="0" dimension="1" ref-type="left-type"/>
+	<type name="public.ltxtquery" length="0" ref-type="right-type"/>
+	<operator ref-type="commutator-op" signature="public.@(public.ltxtquery,public.ltree[])"/>
+	<function ref-type="operfunc" signature="public._ltxtq_exec(public.ltree[],public.ltxtquery)"/>
+</operator>
+
+<operator name="^&lt;@" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltree" length="0" ref-type="left-type"/>
+	<type name="public.ltree" length="0" dimension="1" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public._ltree_r_isparent(public.ltree,public.ltree[])"/>
+</operator>
+
+<operator name="^@&gt;" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltree" length="0" dimension="1" ref-type="left-type"/>
+	<type name="public.ltree" length="0" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public._ltree_isparent(public.ltree[],public.ltree)"/>
+</operator>
+
+<operator name="^@&gt;" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltree" length="0" ref-type="left-type"/>
+	<type name="public.ltree" length="0" dimension="1" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public._ltree_r_risparent(public.ltree,public.ltree[])"/>
+</operator>
+
+<operator name="^&lt;@" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltree" length="0" dimension="1" ref-type="left-type"/>
+	<type name="public.ltree" length="0" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public._ltree_risparent(public.ltree[],public.ltree)"/>
+</operator>
+
+<operator name="^~" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.lquery" length="0" ref-type="left-type"/>
+	<type name="public.ltree" length="0" dimension="1" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public._ltq_rregex(public.lquery,public.ltree[])"/>
+</operator>
+
+<operator name="^~" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltree" length="0" dimension="1" ref-type="left-type"/>
+	<type name="public.lquery" length="0" ref-type="right-type"/>
+	<operator ref-type="commutator-op" signature="public.^~(public.lquery,public.ltree[])"/>
+	<function ref-type="operfunc" signature="public._ltq_regex(public.ltree[],public.lquery)"/>
+</operator>
+
+<operator name="^?" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.lquery" length="0" dimension="1" ref-type="left-type"/>
+	<type name="public.ltree" length="0" dimension="1" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public._lt_q_rregex(public.lquery[],public.ltree[])"/>
+</operator>
+
+<operator name="^?" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltree" length="0" dimension="1" ref-type="left-type"/>
+	<type name="public.lquery" length="0" dimension="1" ref-type="right-type"/>
+	<operator ref-type="commutator-op" signature="public.^?(public.lquery[],public.ltree[])"/>
+	<function ref-type="operfunc" signature="public._lt_q_regex(public.ltree[],public.lquery[])"/>
+</operator>
+
+<operator name="^@" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltxtquery" length="0" ref-type="left-type"/>
+	<type name="public.ltree" length="0" dimension="1" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public._ltxtq_rexec(public.ltxtquery,public.ltree[])"/>
+</operator>
+
+<operator name="^@" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltree" length="0" dimension="1" ref-type="left-type"/>
+	<type name="public.ltxtquery" length="0" ref-type="right-type"/>
+	<operator ref-type="commutator-op" signature="public.^@(public.ltxtquery,public.ltree[])"/>
+	<function ref-type="operfunc" signature="public._ltxtq_exec(public.ltree[],public.ltxtquery)"/>
+</operator>
+
+<function name="_ltree_extract_isparent" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="public.ltree" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0" dimension="1"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="_ltree_extract_isparent"/>
+</function>
+
+<operator name="?@&gt;" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltree" length="0" dimension="1" ref-type="left-type"/>
+	<type name="public.ltree" length="0" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public._ltree_extract_isparent(public.ltree[],public.ltree)"/>
+</operator>
+
+<function name="_ltree_extract_risparent" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="public.ltree" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0" dimension="1"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="_ltree_extract_risparent"/>
+</function>
+
+<operator name="?&lt;@" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltree" length="0" dimension="1" ref-type="left-type"/>
+	<type name="public.ltree" length="0" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public._ltree_extract_risparent(public.ltree[],public.ltree)"/>
+</operator>
+
+<function name="_ltq_extract_regex" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="public.ltree" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0" dimension="1"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.lquery" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="_ltq_extract_regex"/>
+</function>
+
+<operator name="?~" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltree" length="0" dimension="1" ref-type="left-type"/>
+	<type name="public.lquery" length="0" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public._ltq_extract_regex(public.ltree[],public.lquery)"/>
+</operator>
+
+<function name="_ltxtq_extract_exec" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="public.ltree" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0" dimension="1"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltxtquery" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="_ltxtq_extract_exec"/>
+</function>
+
+<operator name="?@" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<type name="public.ltree" length="0" dimension="1" ref-type="left-type"/>
+	<type name="public.ltxtquery" length="0" ref-type="right-type"/>
+	<function ref-type="operfunc" signature="public._ltxtq_extract_exec(public.ltree[],public.ltxtquery)"/>
+</operator>
+
+<function name="_ltree_consistent" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="boolean" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="internal" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltree" length="0" dimension="1"/>
+	</parameter>
+	<parameter name="_param3">
+		<type name="smallint" length="0"/>
+	</parameter>
+	<parameter name="_param4">
+		<type name="oid" length="0"/>
+	</parameter>
+	<parameter name="_param5">
+		<type name="internal" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="_ltree_consistent"/>
+</function>
+
+<function name="_ltree_compress" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="internal" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="internal" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="_ltree_compress"/>
+</function>
+
+<function name="_ltree_penalty" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="internal" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="internal" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="internal" length="0"/>
+	</parameter>
+	<parameter name="_param3">
+		<type name="internal" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="_ltree_penalty"/>
+</function>
+
+<function name="_ltree_picksplit" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="internal" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="internal" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="internal" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="_ltree_picksplit"/>
+</function>
+
+<function name="_ltree_union" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="public.ltree_gist" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="internal" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="internal" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="_ltree_union"/>
+</function>
+
+<function name="_ltree_same" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="internal" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree_gist" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="public.ltree_gist" length="0"/>
+	</parameter>
+	<parameter name="_param3">
+		<type name="internal" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="_ltree_same"/>
+</function>
+
+<opfamily name="gist__ltree_ops" index-type="gist" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+</opfamily>
+
+<function name="_ltree_gist_options" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="void" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="internal" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="_ltree_gist_options"/>
+</function>
+
+<opclass  name="gist__ltree_ops" index-type="gist" default="true" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<opfamily signature="public.gist__ltree_ops USING gist"/>
+	<type name="public.ltree" length="0" dimension="1"/>
+	<element type="storage">
+		<type name="public.ltree_gist" length="0"/>
+	</element>
+	<element type="function" stg-number="1">
+		<function signature="public._ltree_consistent(internal,public.ltree[],smallint,oid,internal)"/>
+	</element>
+	<element type="function" stg-number="2">
+		<function signature="public._ltree_union(internal,internal)"/>
+	</element>
+	<element type="function" stg-number="3">
+		<function signature="public._ltree_compress(internal)"/>
+	</element>
+	<element type="function" stg-number="4">
+		<function signature="public.ltree_decompress(internal)"/>
+	</element>
+	<element type="function" stg-number="5">
+		<function signature="public._ltree_penalty(internal,internal,internal)"/>
+	</element>
+	<element type="function" stg-number="6">
+		<function signature="public._ltree_picksplit(internal,internal)"/>
+	</element>
+	<element type="function" stg-number="7">
+		<function signature="public._ltree_same(public.ltree_gist,public.ltree_gist,internal)"/>
+	</element>
+	<element type="function" stg-number="10">
+		<function signature="public._ltree_gist_options(internal)"/>
+	</element>
+	<element type="operator" stg-number="10">
+		<operator  signature="public.&lt;@(public.ltree[],public.ltree)"/>
+	</element>
+	<element type="operator" stg-number="11">
+		<operator  signature="public.@&gt;(public.ltree,public.ltree[])"/>
+	</element>
+	<element type="operator" stg-number="12">
+		<operator  signature="public.~(public.ltree[],public.lquery)"/>
+	</element>
+	<element type="operator" stg-number="13">
+		<operator ref-type="commutator-op" signature="public.~(public.lquery,public.ltree[])"/>
+	</element>
+	<element type="operator" stg-number="14">
+		<operator  signature="public.@(public.ltree[],public.ltxtquery)"/>
+	</element>
+	<element type="operator" stg-number="15">
+		<operator ref-type="commutator-op" signature="public.@(public.ltxtquery,public.ltree[])"/>
+	</element>
+	<element type="operator" stg-number="16">
+		<operator  signature="public.?(public.ltree[],public.lquery[])"/>
+	</element>
+	<element type="operator" stg-number="17">
+		<operator ref-type="commutator-op" signature="public.?(public.lquery[],public.ltree[])"/>
+	</element>
+</opclass>
+
+<function name="ltree_recv" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="public.ltree" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="internal" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltree_recv"/>
+</function>
+
+<function name="ltree_send" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="bytea" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltree_send"/>
+</function>
+
+<function name="lquery_recv" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="public.lquery" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="internal" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="lquery_recv"/>
+</function>
+
+<function name="lquery_send" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="bytea" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.lquery" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="lquery_send"/>
+</function>
+
+<function name="ltxtq_recv" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="public.ltxtquery" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="internal" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltxtq_recv"/>
+</function>
+
+<function name="ltxtq_send" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="bytea" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltxtquery" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="ltxtq_send"/>
+</function>
+
+<function name="hash_ltree" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="integer" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="hash_ltree"/>
+</function>
+
+<function name="hash_ltree_extended" sql-disabled="true"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="STRICT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL SAFE"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<language name="c"/>
+	<return-type>
+	<type name="bigint" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="public.ltree" length="0"/>
+	</parameter>
+	<parameter name="_param2">
+		<type name="bigint" length="0"/>
+	</parameter>
+	<definition library="$libdir/ltree" symbol="hash_ltree_extended"/>
+</function>
+
+<opfamily name="hash_ltree_ops" index-type="hash" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+</opfamily>
+
+<opclass  name="hash_ltree_ops" index-type="hash" default="true" sql-disabled="true">
+	<schema name="public"/>
+	<role name="eduardo"/>
+	<opfamily signature="public.hash_ltree_ops USING hash"/>
+	<type name="public.ltree" length="0"/>
+	<element type="function" stg-number="1">
+		<function signature="public.hash_ltree(public.ltree)"/>
+	</element>
+	<element type="function" stg-number="2">
+		<function signature="public.hash_ltree_extended(public.ltree,bigint)"/>
+	</element>
+	<element type="operator" stg-number="1">
+		<operator  signature="public.=(public.ltree,public.ltree)"/>
+	</element>
+</opclass>
+
+<sequence name="task_id_task_seq" cycle="false" start="1" increment="1" min-value="1" max-value="2147483647" cache="1">
+	<schema name="eduardo"/>
+	<role name="taskmaster_super"/>
+</sequence>
+
+<usertype name="task_priority" configuration="enumeration">
+	<schema name="public"/>
+	<role name="taskmaster_super"/>
+	<enumeration label="normal"/>
+	<enumeration label="low"/>
+	<enumeration label="medium"/>
+	<enumeration label="high"/>
+	<enumeration label="critical"/>
+</usertype>
+
+<table name="external_task" layers="0" collapse-mode="2" max-obj-count="9" z-value="0">
+	<schema name="eduardo"/>
+	<role name="taskmaster_super"/>
+	<position x="2720" y="420"/>
+	<column name="id" not-null="true">
+		<type name="varchar" length="20"/>
+	</column>
+	<column name="key" not-null="true">
+		<type name="varchar" length="40"/>
+	</column>
+	<column name="id_task" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="integration">
+		<type name="varchar" length="40"/>
+	</column>
+	<column name="icon">
+		<type name="varchar" length="255"/>
+	</column>
+	<column name="updated">
+		<type name="timestamp" length="0"/>
+	</column>
+	<column name="data">
+		<type name="json" length="0"/>
+	</column>
+	<column name="id_project">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="pk_external_task" type="pk-constr" table="eduardo.external_task">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="integration" layers="0" collapse-mode="2" max-obj-count="6" z-value="0">
+	<schema name="public"/>
+	<role name="taskmaster_super"/>
+	<position x="3280" y="100"/>
+	<column name="id_integration" not-null="true"
+	 identity-type="ALWAYS">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="integration" not-null="true">
+		<type name="varchar" length="40"/>
+	</column>
+	<column name="script">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="parameters">
+		<type name="jsonb" length="0"/>
+	</column>
+	<column name="icon">
+		<type name="varchar" length="255"/>
+	</column>
+	<constraint name="pk_integration" type="pk-constr" table="public.integration">
+		<columns names="id_integration" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="project_integration" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="eduardo"/>
+	<role name="taskmaster_super"/>
+	<position x="2680" y="140"/>
+	<column name="id_project" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="id_integration" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="parameters">
+		<type name="jsonb" length="0"/>
+	</column>
+	<constraint name="pk_project_integration" type="pk-constr" table="eduardo.project_integration">
+		<columns names="id_project,id_integration" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="board_tasks_position" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="eduardo"/>
+	<role name="taskmaster_super"/>
+	<position x="340" y="820"/>
+	<column name="sort_order">
+		<type name="float" length="0"/>
+	</column>
+
+	<customidxs object-type="column">
+		<object name="id_board" index="1"/>
+		<object name="id_task" index="2"/>
+	</customidxs>
+	<customidxs object-type="constraint">
+		<object name="board_fk" index="1"/>
+		<object name="board_tasks_position_pk" index="0"/>
+		<object name="task_fk" index="2"/>
+	</customidxs></table>
+
+<relationship name="board_has_many_board_state_tasks_position" type="rel1n" layers="0"
+	 src-col-pattern="{sc}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 src-table="eduardo.board"
+	 dst-table="eduardo.board_tasks_position"
+	 src-required="true" dst-required="false"
+	 identifier="true"
+/>
+
+<usertype name="task_type" configuration="enumeration">
+	<schema name="public"/>
+	<role name="taskmaster_super"/>
+	<enumeration label="task"/>
+	<enumeration label="subtask"/>
+	<enumeration label="defect"/>
+	<enumeration label="idea"/>
+	<enumeration label="discarded"/>
+	<enumeration label="archived"/>
+</usertype>
+
+<table name="task" layers="0" collapse-mode="2" max-obj-count="22" z-value="0">
+	<schema name="eduardo"/>
+	<role name="taskmaster_super"/>
+	<position x="2120" y="620"/>
+	<column name="id_task" not-null="true" default-value="nextval('task_id_task_seq'::regclass)">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="id_project" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="title" not-null="true">
+		<type name="character varying" length="132"/>
+	</column>
+	<column name="description">
+		<type name="character varying" length="0"/>
+	</column>
+	<column name="state" not-null="true">
+		<type name="character varying" length="40"/>
+	</column>
+	<column name="activity">
+		<type name="jsonb" length="0"/>
+	</column>
+	<column name="state_latest_change">
+		<type name="timestamp" length="0"/>
+	</column>
+	<column name="hierarchy">
+		<type name="public.ltree" length="0"/>
+	</column>
+	<column name="priority">
+		<type name="public.task_priority" length="0"/>
+	</column>
+	<column name="type">
+		<type name="public.task_type" length="0"/>
+	</column>
+	<column name="due_date">
+		<type name="timestamp" length="0"/>
+	</column>
+	<column name="estimated_start_date">
+		<type name="timestamp" length="0"/>
+	</column>
+	<column name="start_date">
+		<type name="timestamp" length="0"/>
+	</column>
+	<column name="end_date">
+		<type name="timestamp" length="0"/>
+	</column>
+	<column name="last_activity">
+		<type name="timestamp" length="0"/>
+	</column>
+	<column name="estimated_duration">
+		<type name="interval" length="0"/>
+	</column>
+	<column name="expanded" default-value="true">
+		<type name="boolean" length="0"/>
+	</column>
+	<column name="notes">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="id_epic">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="task_pk" type="pk-constr" table="eduardo.task">
+		<columns names="id_task" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<relationship name="task_has_many_board_state_tasks_position" type="rel1n" layers="0"
+	 src-col-pattern="{sc}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 src-table="eduardo.task"
+	 dst-table="eduardo.board_tasks_position"
+	 src-required="true" dst-required="false"
+	 identifier="true"
+/>
+
+<table name="project_billing" layers="0" collapse-mode="2" max-obj-count="6" z-value="0">
+	<schema name="eduardo"/>
+	<role name="taskmaster_super"/>
+	<position x="2360" y="240"/>
+	<column name="id_billing" not-null="true"
+	 identity-type="BY DEFAULT">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="id_project" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="from_date">
+		<type name="date" length="0"/>
+	</column>
+	<column name="to_date">
+		<type name="date" length="0"/>
+	</column>
+	<column name="hour_rate">
+		<type name="money" length="0"/>
+	</column>
+	<constraint name="pk_billing" type="pk-constr" table="eduardo.project_billing">
+		<columns names="id_billing" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="epic" layers="0" collapse-mode="2" max-obj-count="8" z-value="0">
+	<schema name="eduardo"/>
+	<role name="taskmaster_super"/>
+	<position x="1720" y="360"/>
+	<column name="id_epic" not-null="true"
+	 identity-type="ALWAYS">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="epic" not-null="true">
+		<type name="varchar" length="80"/>
+	</column>
+	<column name="state">
+		<type name="varchar" length="40"/>
+	</column>
+	<column name="id_project" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="expanded" default-value="true">
+		<type name="boolean" length="0"/>
+	</column>
+	<column name="description">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="priority">
+		<type name="public.task_priority" length="0"/>
+	</column>
+	<constraint name="pk_epic" type="pk-constr" table="eduardo.epic">
+		<columns names="id_epic" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<constraint name="board_objects_id_board_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="eduardo.board" table="eduardo.board_objects">
+	<columns names="id_board" ref-type="src-columns"/>
+	<columns names="id_board" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="board_objects_id_project_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="eduardo.project" table="eduardo.board_objects">
+	<columns names="id_project" ref-type="src-columns"/>
+	<columns names="id_project" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="board_objects_id_tag_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="eduardo.tag" table="eduardo.board_objects">
+	<columns names="id_tag" ref-type="src-columns"/>
+	<columns names="id_tag" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="board_states_id_board_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="eduardo.board" table="eduardo.board_states">
+	<columns names="id_board" ref-type="src-columns"/>
+	<columns names="id_board" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="board_states_state_set_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="eduardo.state_set" table="eduardo.board_states">
+	<columns names="state_set" ref-type="src-columns"/>
+	<columns names="id_state_set" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="project_tags_id_project_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="eduardo.project" table="eduardo.project_tags">
+	<columns names="id_project" ref-type="src-columns"/>
+	<columns names="id_project" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="project_tags_id_tag_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="eduardo.tag" table="eduardo.project_tags">
+	<columns names="id_tag" ref-type="src-columns"/>
+	<columns names="id_tag" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="states_4_set_state_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="eduardo.state" table="eduardo.states_4_set">
+	<columns names="state" ref-type="src-columns"/>
+	<columns names="state" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="states_4_set_state_set_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="eduardo.state_set" table="eduardo.states_4_set">
+	<columns names="state_set" ref-type="src-columns"/>
+	<columns names="id_state_set" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="task_tags_id_tag_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="eduardo.tag" table="eduardo.task_tags">
+	<columns names="id_tag" ref-type="src-columns"/>
+	<columns names="id_tag" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="task_tags_id_task_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="eduardo.task" table="eduardo.task_tags">
+	<columns names="id_task" ref-type="src-columns"/>
+	<columns names="id_task" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_tp_task" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="eduardo.task" table="eduardo.time_spent">
+	<columns names="id_task" ref-type="src-columns"/>
+	<columns names="id_task" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="user_roles_role_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.roles" table="public.user_roles">
+	<columns names="role" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="user_roles_user_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.users" table="public.user_roles">
+	<columns names="user" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_external_task" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="RESTRICT" del-action="RESTRICT" ref-table="eduardo.task" table="eduardo.external_task">
+	<columns names="id_task" ref-type="src-columns"/>
+	<columns names="id_task" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="id_project" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="eduardo.project" table="eduardo.external_task">
+	<columns names="id_project" ref-type="src-columns"/>
+	<columns names="id_project" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_project_integration_prj" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="eduardo.project" table="eduardo.project_integration">
+	<columns names="id_project" ref-type="src-columns"/>
+	<columns names="id_project" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_prj_integration_int" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="RESTRICT" del-action="RESTRICT" ref-table="public.integration" table="eduardo.project_integration">
+	<columns names="id_integration" ref-type="src-columns"/>
+	<columns names="id_integration" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_project_task" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="CASCADE" ref-table="eduardo.project" table="eduardo.task">
+	<columns names="id_project" ref-type="src-columns"/>
+	<columns names="id_project" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_task_state" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="RESTRICT" ref-table="eduardo.state" table="eduardo.task">
+	<columns names="state" ref-type="src-columns"/>
+	<columns names="state" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_task_epic" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="SET NULL" del-action="SET NULL" ref-table="eduardo.epic" table="eduardo.task">
+	<columns names="id_epic" ref-type="src-columns"/>
+	<columns names="id_epic" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_billing_project" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="eduardo.project" table="eduardo.project_billing">
+	<columns names="id_project" ref-type="src-columns"/>
+	<columns names="id_project" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_epic_project" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="CASCADE" ref-table="eduardo.project" table="eduardo.epic">
+	<columns names="id_project" ref-type="src-columns"/>
+	<columns names="id_project" ref-type="dst-columns"/>
+</constraint>
+
+<relationship name="rel_board_objects_board" type="relfk" layers="0"
+	 src-table="eduardo.board_objects"
+	 dst-table="eduardo.board" reference-fk="board_objects_id_board_fkey"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_board_objects_project" type="relfk" layers="0"
+	 src-table="eduardo.board_objects"
+	 dst-table="eduardo.project" reference-fk="board_objects_id_project_fkey"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_board_objects_tag" type="relfk" layers="0"
+	 src-table="eduardo.board_objects"
+	 dst-table="eduardo.tag" reference-fk="board_objects_id_tag_fkey"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_board_states_board" type="relfk" layers="0"
+	 src-table="eduardo.board_states"
+	 dst-table="eduardo.board" reference-fk="board_states_id_board_fkey"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_board_states_state_set" type="relfk" layers="0"
+	 src-table="eduardo.board_states"
+	 dst-table="eduardo.state_set" reference-fk="board_states_state_set_fkey"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_project_tags_project" type="relfk" layers="0"
+	 src-table="eduardo.project_tags"
+	 dst-table="eduardo.project" reference-fk="project_tags_id_project_fkey"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_project_tags_tag" type="relfk" layers="0"
+	 src-table="eduardo.project_tags"
+	 dst-table="eduardo.tag" reference-fk="project_tags_id_tag_fkey"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_states_4_set_state" type="relfk" layers="0"
+	 src-table="eduardo.states_4_set"
+	 dst-table="eduardo.state" reference-fk="states_4_set_state_fkey"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_states_4_set_state_set" type="relfk" layers="0"
+	 src-table="eduardo.states_4_set"
+	 dst-table="eduardo.state_set" reference-fk="states_4_set_state_set_fkey"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_task_tags_tag" type="relfk" layers="0"
+	 src-table="eduardo.task_tags"
+	 dst-table="eduardo.tag" reference-fk="task_tags_id_tag_fkey"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_task_tags_task" type="relfk" layers="0"
+	 src-table="eduardo.task_tags"
+	 dst-table="eduardo.task" reference-fk="task_tags_id_task_fkey"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_time_spent_task" type="relfk" layers="0"
+	 src-table="eduardo.time_spent"
+	 dst-table="eduardo.task" reference-fk="fk_tp_task"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_user_roles_roles" type="relfk" layers="0"
+	 src-table="public.user_roles"
+	 dst-table="public.roles" reference-fk="user_roles_role_fkey"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_user_roles_users" type="relfk" layers="0"
+	 src-table="public.user_roles"
+	 dst-table="public.users" reference-fk="user_roles_user_fkey"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_task_project" type="relfk" layers="0"
+	 src-table="eduardo.task"
+	 dst-table="eduardo.project" reference-fk="fk_project_task"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_task_state" type="relfk" layers="0"
+	 src-table="eduardo.task"
+	 dst-table="eduardo.state" reference-fk="fk_task_state"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_project_integration_project" type="relfk" layers="0"
+	 src-table="eduardo.project_integration"
+	 dst-table="eduardo.project" reference-fk="fk_project_integration_prj"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_project_integration_integration" type="relfk" layers="0"
+	 src-table="eduardo.project_integration"
+	 dst-table="public.integration" reference-fk="fk_prj_integration_int"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_external_task_task" type="relfk" layers="0"
+	 src-table="eduardo.external_task"
+	 dst-table="eduardo.task" reference-fk="fk_external_task"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_external_task_project" type="relfk" layers="0"
+	 src-table="eduardo.external_task"
+	 dst-table="eduardo.project" reference-fk="id_project"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_project_billing_project" type="relfk" layers="0"
+	 src-table="eduardo.project_billing"
+	 dst-table="eduardo.project" reference-fk="fk_billing_project"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_epic_project" type="relfk" layers="0"
+	 src-table="eduardo.epic"
+	 dst-table="eduardo.project" reference-fk="fk_epic_project"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_task_epic" type="relfk" layers="0"
+	 src-table="eduardo.task"
+	 dst-table="eduardo.epic" reference-fk="fk_task_epic"
+	 src-required="false" dst-required="false"/>
+
+</dbmodel>
